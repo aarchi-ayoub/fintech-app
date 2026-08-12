@@ -1,4 +1,5 @@
 export default {
+  white: '#fff',
   primary: '#3D38ED',
   primaryMuted: '#C9C8FA',
   background: '#F5F5F5',
