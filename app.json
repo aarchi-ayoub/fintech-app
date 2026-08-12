@@ -36,7 +36,16 @@
     "plugins": [
       "expo-router",
       "expo-dev-client",
-      "expo-asset"
+      "expo-asset",
+      [
+        "expo-localization",
+        {
+          "supportedLocales": {
+            "ios": ["en", "fr"],
+            "android": ["en", "fr"]
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
