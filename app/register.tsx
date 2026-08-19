@@ -17,8 +17,8 @@ const Register = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [visible, setVisible] = useState(false);
   const [phoneError, setPhoneError] = useState('');
-  const [phoneHasError, setPhoneHasError] = useState<boolean>(true);
-
+  const [phoneHasError, setPhoneHasError] = useState<boolean>(false);
+  const [hasTouchedPhone, setHasTouchedPhone] = useState(false);
   const onSelectCountry = (country: Country) => {
     setCountryCode(country.cca2);
     setCallingCode(country.callingCode[0]);
@@ -43,8 +43,11 @@ const Register = () => {
   }, [phoneNumber]);
 
   useEffect(() => {
+    if (!hasTouchedPhone) {
+      return;
+    }
     handlePhoneBlur();
-  }, [phoneNumber, handlePhoneBlur]);
+  }, [hasTouchedPhone, phoneNumber, handlePhoneBlur]);
 
   return (
     <KeyboardAvoidingView
@@ -57,13 +60,18 @@ const Register = () => {
 
         <Text style={Styles.descriptionText}>{t('subTitle')}</Text>
 
-        <View style={styles.content}>
+        <View style={Styles.flex}>
           <View style={styles.inputs}>
             <TextInput
               testID="phoneNumber-input"
               placeholder={t('phoneNumberPlaceholder')}
               value={phoneNumber}
-              handleTextChange={setPhoneNumber}
+              handleTextChange={(val) => {
+                if (!hasTouchedPhone) {
+                  setHasTouchedPhone(true);
+                }
+                setPhoneNumber(val);
+              }}
               containerStyle={styles.inputContainer}
               onBlur={handlePhoneBlur}
               hasError={phoneHasError}
@@ -94,7 +102,7 @@ const Register = () => {
           title={t('button')}
           textStyle={styles.buttonTextStyle}
           containerStyles={styles.buttonContainer}
-          disabled={phoneHasError}
+          disabled={phoneHasError || !phoneNumber}
         />
       </View>
     </KeyboardAvoidingView>
@@ -104,10 +112,6 @@ const Register = () => {
 export default Register;
 
 const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-  },
-
   inputs: {
     flexDirection: 'row',
     overflow: 'hidden',
