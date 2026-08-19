@@ -1,14 +1,16 @@
-import { Colors, Styles } from '@/constants';
+import colors from '@/constants/Colors';
+import Styles from '@/constants/Styles';
 import React from 'react';
-import { Pressable, StyleSheet, Text, ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
 
 interface ButtonProps {
   title: string;
   onPress?: () => void;
   containerStyles?: ViewStyle;
   disabled?: boolean;
+  textStyle?: TextStyle;
 }
-const Button = ({ title, onPress, containerStyles, disabled }: ButtonProps) => {
+const Button = ({ title, onPress, containerStyles, disabled, textStyle }: ButtonProps) => {
   const $style = [
     Styles.pillButton,
     styles.container,
@@ -17,7 +19,7 @@ const Button = ({ title, onPress, containerStyles, disabled }: ButtonProps) => {
   ];
   return (
     <Pressable disabled={disabled} onPress={onPress} style={$style}>
-      <Text style={styles.text}>{title}</Text>
+      <Text style={[textStyle, styles.text]}>{title}</Text>
     </Pressable>
   );
 };
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
     width: '50%',
     height: 60,
     justifyContent: 'center',
-    backgroundColor: Colors.white,
+    backgroundColor: colors.textInverse,
   },
   text: {
     fontSize: 16,
