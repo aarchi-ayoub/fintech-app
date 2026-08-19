@@ -1730,6 +1730,11 @@
   resolved "https://registry.npmjs.org/@react-native/normalize-colors/-/normalize-colors-0.81.5.tgz"
   integrity sha512-0HuJ8YtqlTVRXGZuGeBejLE04wSQsibpTI+RGOyVqxZvgtlLLC/Ssw0UmbHhT4lYMp2fhdtvKZSs5emWB1zR/g==
 
+"@react-native/normalize-colors@0.86.2":
+  version "0.86.2"
+  resolved "https://registry.yarnpkg.com/@react-native/normalize-colors/-/normalize-colors-0.86.2.tgz#364ba55db9529458da43654a35daf465ec20e4fe"
+  integrity sha512-EzPFc9Y6lzYOWeso2almwXI7f8+qReHxWvT+algsOczb2UhWXIWXDoSvkdwoSfiwwmGt/ijJgKJoeHlzPkLwRg==
+
 "@react-native/normalize-colors@^0.74.1":
   version "0.74.89"
   resolved "https://registry.npmjs.org/@react-native/normalize-colors/-/normalize-colors-0.74.89.tgz"
@@ -3736,6 +3741,14 @@ expo-status-bar@~3.0.9:
   integrity sha512-xyYyVg6V1/SSOZWh4Ni3U129XHCnFHBTcUo0dhWtFDrZbNp/duw5AGsQfb2sVeU0gxWHXSY1+5F0jnKYC7WuOw==
   dependencies:
     react-native-is-edge-to-edge "^1.2.1"
+
+expo-system-ui@^57.0.2:
+  version "57.0.2"
+  resolved "https://registry.yarnpkg.com/expo-system-ui/-/expo-system-ui-57.0.2.tgz#661a72f07df62e63bc9ee917ac1e1d3e8b9c2881"
+  integrity sha512-zABCRqFSioDBAo/RtmS0dQiGgDtDPZUVk01Y3Ti4ducobNM4HTM2sNAtq+YPpEUhaVW3hccPVsEUH4LK/ADVhA==
+  dependencies:
+    "@react-native/normalize-colors" "0.86.2"
+    debug "^4.3.2"
 
 expo-updates-interface@~2.0.0:
   version "2.0.0"
