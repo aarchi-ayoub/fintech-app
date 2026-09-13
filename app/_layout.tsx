@@ -52,6 +52,7 @@ const InitialRootLayout = () => {
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="register" options={registerScreenOptions} />
+      <Stack.Screen name="login" options={registerScreenOptions} />
     </Stack>
   );
 };
