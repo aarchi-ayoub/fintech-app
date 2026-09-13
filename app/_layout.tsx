@@ -2,14 +2,14 @@ import ArrowBackButton from '@/components/ArrowBackButton';
 import Config from '@/config';
 import colors from '@/constants/Colors';
 import '@/lib/i18n';
-
+import { ClerkProvider } from '@clerk/expo';
+import { tokenCache } from '@clerk/expo/token-cache';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-
 const publishableKey = Config.CLERK_KEY;
 
 if (!publishableKey) {
@@ -64,7 +64,11 @@ const InitialRootLayout = () => {
 };
 
 const RootLayoutNav = () => {
-  return <InitialRootLayout />;
+  return (
+    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+      <InitialRootLayout />
+    </ClerkProvider>
+  );
 };
 
 export default RootLayoutNav;
