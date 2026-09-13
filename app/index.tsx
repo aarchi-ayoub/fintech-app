@@ -1,24 +1,23 @@
 import { Button } from '@/components';
 import { useAssets } from 'expo-asset';
-import { ResizeMode, Video } from 'expo-av';
 import { Link } from 'expo-router';
+import { VideoView, useVideoPlayer } from 'expo-video';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 const Page = () => {
   const { t } = useTranslation('home');
   const [assets] = useAssets(require('@/assets/videos/intro.mp4'));
+  const player = useVideoPlayer(assets?.[0]?.uri ?? null, (player) => {
+    player.loop = true;
+    player.muted = true;
+    player.play();
+  });
+
   return (
     <View style={styles.container}>
       {!!assets && (
-        <Video
-          resizeMode={ResizeMode.COVER}
-          isMuted
-          isLooping
-          shouldPlay
-          source={{ uri: assets[0].uri }}
-          style={styles.video}
-        />
+        <VideoView player={player} style={styles.video} contentFit="cover" nativeControls={false} />
       )}
       <View style={styles.header}>
         <Text style={styles.headerText}>{t('header')}</Text>
