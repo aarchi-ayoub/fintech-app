@@ -4,14 +4,16 @@ import colors from '@/constants/Colors';
 import Spacing from '@/constants/Spacing';
 import { isValidPhoneNumber } from '@/utils/fromvalidations';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, type ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { Country, CountryCode } from 'react-native-country-picker-modal';
+
+type IonIconName = ComponentProps<typeof Ionicons>['name'];
 
 const Login = () => {
   const { t } = useTranslation('login');
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 100 : 0;
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 50 : 0;
   const [countryCode, setCountryCode] = useState<CountryCode>('FR');
   const [callingCode, setCallingCode] = useState<string>('33');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
@@ -42,20 +44,37 @@ const Login = () => {
     setPhoneError('');
   }, [phoneNumber]);
 
+  const continueWithOptions: {
+    label: string;
+    icon: IonIconName;
+  }[] = [
+    {
+      label: t('email'),
+      icon: 'mail',
+    },
+    {
+      label: t('google'),
+      icon: 'logo-google',
+    },
+    {
+      label: t('apple'),
+      icon: 'logo-apple',
+    },
+  ];
+
   useEffect(() => {
     if (!hasTouchedPhone) {
       return;
     }
     handlePhoneBlur();
   }, [hasTouchedPhone, phoneNumber, handlePhoneBlur]);
-
   return (
     <KeyboardAvoidingView
       style={Theme.styles.flex}
       behavior="padding"
       keyboardVerticalOffset={keyboardVerticalOffset}
     >
-      <View style={Theme.styles.container}>
+      <ScrollView contentContainerStyle={Theme.styles.container}>
         <Text style={Theme.styles.header}>{t('title')}</Text>
         <Text style={Theme.styles.descriptionText}>{t('subTitle')}</Text>
         <View style={Theme.styles.flex}>
@@ -91,27 +110,34 @@ const Login = () => {
               maxLength={9}
             />
           </View>
+          <Button
+            title={t('button')}
+            textStyle={styles.buttonTextStyle}
+            containerStyles={styles.buttonContainer}
+            disabled={phoneHasError || !phoneNumber}
+          />
           <View style={styles.buttonContainerWrapper}>
-            <Button
-              title={t('button')}
-              textStyle={styles.buttonTextStyle}
-              containerStyles={styles.buttonContainer}
-              disabled={phoneHasError || !phoneNumber}
-            />
             <View style={styles.row}>
               <View style={styles.separator} />
               <Text style={styles.orText}>{t('or')}</Text>
               <View style={styles.separator} />
             </View>
-            <Button
-              title={t('continueWithEmail')}
-              textStyle={styles.buttonTextStyle}
-              containerStyles={styles.buttonContainer}
-              leftComp={() => <Ionicons name="mail-outline" size={24} color={colors.white} />}
-            />
+            <View style={styles.optionsWrapper}>
+              {continueWithOptions.map((opt) => (
+                <Button
+                  key={opt.label}
+                  title={`${t('continueWith')} ${opt.label}`}
+                  textStyle={styles.continueButtonTextStyle}
+                  containerStyles={styles.continueButtonContainer}
+                  leftComp={() => (
+                    <Ionicons name={opt.icon} size={24} color={colors.textSecondary} />
+                  )}
+                />
+              ))}
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -119,7 +145,7 @@ const Login = () => {
 export default Login;
 
 const styles = StyleSheet.create({
-  buttonContainerWrapper: { flex: 1, justifyContent: 'flex-end', paddingBottom: Spacing.xl },
+  buttonContainerWrapper: { paddingBottom: Spacing.xl },
   inputs: {
     flexDirection: 'row',
     overflow: 'hidden',
@@ -151,5 +177,15 @@ const styles = StyleSheet.create({
     color: colors.gray500,
     fontSize: 16,
     fontWeight: '600',
+  },
+  continueButtonContainer: {
+    width: '100%',
+    backgroundColor: colors.backgroundSecondary,
+  },
+  continueButtonTextStyle: {
+    color: colors.textSecondary,
+  },
+  optionsWrapper: {
+    gap: Spacing.md,
   },
 });
