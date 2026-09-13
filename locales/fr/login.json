@@ -3,6 +3,9 @@
   "subTitle": "Enter the phone number associated with your account",
   "button": "Continue",
   "or": "or",
-  "continueWithEmail": "Continue with email",
-  "phoneNumberPlaceholder": "612345678"
+  "continueWith": "Continue with",
+  "phoneNumberPlaceholder": "612345678",
+  "email": "Email",
+  "google": "Google",
+  "apple": "Apple"
 }
