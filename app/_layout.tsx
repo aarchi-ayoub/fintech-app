@@ -1,4 +1,5 @@
 import ArrowBackButton from '@/components/ArrowBackButton';
+import Config from '@/config';
 import colors from '@/constants/Colors';
 import '@/lib/i18n';
 
@@ -9,6 +10,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
+const publishableKey = Config.CLERK_KEY;
+
+if (!publishableKey) {
+  throw new Error('Add your Clerk Publishable Key to the .env file');
+}
 export {
     // Catch any errors thrown by the Layout component.
     ErrorBoundary
