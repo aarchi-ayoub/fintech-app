@@ -67,10 +67,11 @@ const Register = () => {
               placeholder={t('phoneNumberPlaceholder')}
               value={phoneNumber}
               handleTextChange={(val) => {
+                const numericValue = val.replace(/\D/g, '');
                 if (!hasTouchedPhone) {
                   setHasTouchedPhone(true);
                 }
-                setPhoneNumber(val);
+                setPhoneNumber(numericValue);
               }}
               containerStyle={styles.inputContainer}
               onBlur={handlePhoneBlur}
