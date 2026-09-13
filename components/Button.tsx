@@ -1,4 +1,5 @@
 import colors from '@/constants/Colors';
+import Spacing from '@/constants/Spacing';
 import Styles from '@/constants/Styles';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View, type TextStyle, type ViewStyle } from 'react-native';
@@ -55,10 +56,10 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   left: {
-    marginRight: 8,
+    marginRight: Spacing.sm,
   },
 
   right: {
-    marginLeft: 8,
+    marginLeft: Spacing.sm,
   },
 });
