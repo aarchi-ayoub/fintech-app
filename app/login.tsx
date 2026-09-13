@@ -3,10 +3,20 @@ import Theme from '@/constants';
 import colors from '@/constants/Colors';
 import Spacing from '@/constants/Spacing';
 import { isValidPhoneNumber } from '@/utils/fromvalidations';
+import { useSignIn } from '@clerk/expo';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState, type ComponentProps } from 'react';
 import { useTranslation } from 'react-i18next';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+    Alert,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native';
 import type { Country, CountryCode } from 'react-native-country-picker-modal';
 
 type IonIconName = ComponentProps<typeof Ionicons>['name'];
@@ -21,6 +31,10 @@ const Login = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [phoneHasError, setPhoneHasError] = useState<boolean>(false);
   const [hasTouchedPhone, setHasTouchedPhone] = useState<boolean>(false);
+
+  const router = useRouter();
+  const { signIn } = useSignIn();
+
   const onSelectCountry = (country: Country) => {
     setCountryCode(country.cca2);
     setCallingCode(country.callingCode[0]);
@@ -61,6 +75,44 @@ const Login = () => {
       icon: 'logo-apple',
     },
   ];
+
+  const onSignIn = async () => {
+    try {
+      const fullPhoneNumber = `+${callingCode}${phoneNumber}`;
+
+      const { error } = await signIn.create({
+        identifier: fullPhoneNumber,
+      });
+
+      if (error) {
+        console.error('Sign in create error:', error);
+        Alert.alert('Error', error.message);
+        return;
+      }
+
+      const { error: phoneCodeError } = await signIn.phoneCode.sendCode({
+        phoneNumber: fullPhoneNumber,
+      });
+
+      if (phoneCodeError) {
+        console.error('Send OTP error:', phoneCodeError);
+        Alert.alert('Error', phoneCodeError.message);
+        return;
+      }
+
+      router.push({
+        pathname: '/verify/[phone]',
+        params: {
+          phone: fullPhoneNumber,
+          mode: 'sign-in',
+        },
+      });
+    } catch (error) {
+      console.error('Sign in error:', error);
+
+      Alert.alert('Error', error instanceof Error ? error.message : 'Something went wrong.');
+    }
+  };
 
   useEffect(() => {
     if (!hasTouchedPhone) {
@@ -115,6 +167,7 @@ const Login = () => {
             textStyle={styles.buttonTextStyle}
             containerStyles={styles.buttonContainer}
             disabled={phoneHasError || !phoneNumber}
+            onPress={onSignIn}
           />
           <View style={styles.buttonContainerWrapper}>
             <View style={styles.row}>

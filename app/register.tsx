@@ -3,10 +3,11 @@ import colors from '@/constants/Colors';
 import Spacing from '@/constants/Spacing';
 import Styles from '@/constants/Styles';
 import { isValidPhoneNumber } from '@/utils/fromvalidations';
-import { Link } from 'expo-router';
+import { useSignUp } from '@clerk/expo';
+import { Link, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import { type Country, type CountryCode } from 'react-native-country-picker-modal';
 
 const Register = () => {
@@ -19,6 +20,9 @@ const Register = () => {
   const [phoneError, setPhoneError] = useState('');
   const [phoneHasError, setPhoneHasError] = useState<boolean>(false);
   const [hasTouchedPhone, setHasTouchedPhone] = useState(false);
+  const router = useRouter();
+  const { signUp } = useSignUp();
+
   const onSelectCountry = (country: Country) => {
     setCountryCode(country.cca2);
     setCallingCode(country.callingCode[0]);
@@ -41,6 +45,23 @@ const Register = () => {
     setPhoneHasError(false);
     setPhoneError('');
   }, [phoneNumber]);
+
+  const onSingUp = async () => {
+    try {
+      const fullPhoneNumber = `+${callingCode}${phoneNumber}`;
+
+      await signUp.create({
+        phoneNumber: fullPhoneNumber,
+      });
+
+      router.push({
+        pathname: '/verify/[phone]',
+        params: { phone: fullPhoneNumber },
+      });
+    } catch (error) {
+      Alert.alert('Error', error instanceof Error ? error.message : 'Something went wrong.');
+    }
+  };
 
   useEffect(() => {
     if (!hasTouchedPhone) {
@@ -104,6 +125,7 @@ const Register = () => {
           textStyle={styles.buttonTextStyle}
           containerStyles={styles.buttonContainer}
           disabled={phoneHasError || !phoneNumber}
+          onPress={onSingUp}
         />
       </View>
     </KeyboardAvoidingView>
