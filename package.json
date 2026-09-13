@@ -23,7 +23,7 @@
     "check": "npm run typecheck && npm run lint && npm run format:check"
   },
   "dependencies": {
-    "@clerk/clerk-expo": "^2.20.0",
+    "@clerk/expo": "^4.6.6",
     "@expo/vector-icons": "^15.0.3",
     "@react-navigation/native": "^7.1.8",
     "eslint-config-expo": "~10.0.0",
