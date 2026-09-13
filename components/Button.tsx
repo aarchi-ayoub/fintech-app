@@ -1,7 +1,7 @@
 import colors from '@/constants/Colors';
 import Styles from '@/constants/Styles';
 import React from 'react';
-import { Pressable, StyleSheet, Text, type TextStyle, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, Text, View, type TextStyle, type ViewStyle } from 'react-native';
 
 interface ButtonProps {
   title: string;
@@ -9,8 +9,18 @@ interface ButtonProps {
   containerStyles?: ViewStyle;
   disabled?: boolean;
   textStyle?: TextStyle;
+  leftComp?: () => React.JSX.Element;
+  rightComp?: () => React.JSX.Element;
 }
-const Button = ({ title, onPress, containerStyles, disabled, textStyle }: ButtonProps) => {
+const Button = ({
+  title,
+  onPress,
+  containerStyles,
+  disabled,
+  textStyle,
+  leftComp,
+  rightComp,
+}: ButtonProps) => {
   const $style = [
     Styles.pillButton,
     styles.container,
@@ -19,7 +29,9 @@ const Button = ({ title, onPress, containerStyles, disabled, textStyle }: Button
   ];
   return (
     <Pressable disabled={disabled} onPress={onPress} style={$style}>
+      {!!leftComp && <View style={styles.left}>{leftComp()}</View>}
       <Text style={[textStyle, styles.text]}>{title}</Text>
+      {!!rightComp && <View style={styles.right}>{rightComp()}</View>}
     </Pressable>
   );
 };
@@ -32,6 +44,8 @@ const styles = StyleSheet.create({
     height: 60,
     justifyContent: 'center',
     backgroundColor: colors.textInverse,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   text: {
     fontSize: 16,
@@ -39,5 +53,12 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.5,
+  },
+  left: {
+    marginRight: 8,
+  },
+
+  right: {
+    marginLeft: 8,
   },
 });
