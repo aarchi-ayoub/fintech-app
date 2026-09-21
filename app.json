@@ -7,12 +7,6 @@
     "icon": "./assets/images/icon.png",
     "scheme": "fintech",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/images/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "bundleIdentifier": "com.aarchi.fintech",
       "buildNumber": "1",
@@ -23,7 +17,6 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.aarchi.fintech",
       "versionCode": 1
@@ -41,14 +34,8 @@
         "expo-localization",
         {
           "supportedLocales": {
-            "ios": [
-              "en",
-              "fr"
-            ],
-            "android": [
-              "en",
-              "fr"
-            ]
+            "ios": ["en", "fr"],
+            "android": ["en", "fr"]
           }
         }
       ],
@@ -57,7 +44,23 @@
       "@clerk/expo",
       "expo-font",
       "expo-status-bar",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "enableSceneSupport": true
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
