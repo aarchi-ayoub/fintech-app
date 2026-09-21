@@ -54,7 +54,10 @@
       ],
       "expo-video",
       "expo-secure-store",
-      "@clerk/expo"
+      "@clerk/expo",
+      "expo-font",
+      "expo-status-bar",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
