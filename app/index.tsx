@@ -1,8 +1,8 @@
 import { Button } from '@/components';
+import colors from '@/constants/Colors';
 import { useAssets } from 'expo-asset';
 import { Link } from 'expo-router';
 import { VideoView, useVideoPlayer } from 'expo-video';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 const Page = () => {
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: '900',
     textTransform: 'uppercase',
-    color: 'white',
+    color: colors.white,
     lineHeight: 44,
     letterSpacing: 0.4,
   },
